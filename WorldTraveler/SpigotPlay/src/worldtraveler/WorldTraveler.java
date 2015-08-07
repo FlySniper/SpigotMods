@@ -11,6 +11,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,7 +52,7 @@ public class WorldTraveler extends JavaPlugin implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerTeleport(PlayerPortalEvent evt)
+	public void onPlayerEnterPortal(PlayerPortalEvent evt)
 	{
 		if(evt.getCause().equals(TeleportCause.NETHER_PORTAL) && evt.getPlayer().getWorld().getEnvironment() == Environment.NETHER)
 		{
@@ -73,5 +74,14 @@ public class WorldTraveler extends JavaPlugin implements Listener {
 			//evt.getPlayer().teleport(l);
 			System.err.println(l);
 		}
+	}
+	
+	@EventHandler
+	public void onPlayerInitSpawn(PlayerRespawnEvent evt)
+	{
+		int index = random.nextInt(worlds);
+		Location l = new Location(world_list[index], random.nextLong()%xmax, 255, random.nextLong()%zmax);
+		l.setY(Math.max(world_list[index].getHighestBlockYAt(l),world_list[index].getSeaLevel()));
+		evt.setRespawnLocation(l);
 	}
 }
