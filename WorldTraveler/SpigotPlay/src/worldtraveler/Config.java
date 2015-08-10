@@ -19,6 +19,7 @@ public class Config {
 	
 	public String worldnormal = "world";
 	public String worldnether = "world_nether";
+	public boolean randomrespawns = true;
 	public Config()
 	{
 		
@@ -39,6 +40,7 @@ public class Config {
 	    obj.put("zmax",new Integer(xmax));
 	    obj.put("worldnormal",worldnormal);
 	    obj.put("worldnether",worldnether);
+	    obj.put("randomrespawns",new Boolean(randomrespawns));
 
 	    StringWriter out = new StringWriter();
 	    try {
@@ -74,14 +76,15 @@ public class Config {
 			zmax = ((Long)obj.get("zmax")).intValue();
 			worldnormal = (String)obj.get("worldnormal");
 			worldnether = (String)obj.get("worldnether");
+			randomrespawns = (Boolean)obj.get("randomrespawns");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.out.println("World Traveler: Config file not found, creating a new one");
 			return 1;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("World Traveler: IO Exception");
 			return -1;
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			System.err.println("World Traveler: Invalid Config file");
 			return -2;
 		}
 		return 0;

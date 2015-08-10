@@ -109,10 +109,14 @@ public class WorldTraveler extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerSpawn(PlayerRespawnEvent evt)
 	{
-		int index = random.nextInt(config.worlds);
-		Location l = new Location(world_list[index], random.nextLong()%config.xmax, 255, random.nextLong()%config.zmax);
-		l.setY(Math.max(world_list[index].getHighestBlockYAt(l),world_list[index].getSeaLevel()));
-		evt.setRespawnLocation(l);
+		if(config.randomrespawns)
+		{
+			int index = random.nextInt(config.worlds);
+			Location l = new Location(world_list[index], random.nextLong()%config.xmax, 255, random.nextLong()%config.zmax);
+			l.setY(Math.max(world_list[index].getHighestBlockYAt(l),world_list[index].getSeaLevel()));
+			evt.setRespawnLocation(l);
+		}
+		
 	}
 	
 	@EventHandler
