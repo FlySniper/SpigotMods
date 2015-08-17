@@ -2,9 +2,11 @@ package hardermode.entity;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Skeleton;
 //import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.*;
 import org.bukkit.potion.PotionEffect;
@@ -13,17 +15,24 @@ import org.bukkit.potion.PotionEffectType;
 public class SkeletonEvents implements Listener {
 
 	@EventHandler
-	public void onDealDamage(EntityDamageByEntityEvent evt)
+	public void onDealDamage(ProjectileHitEvent evt)
 	{
-		if(evt.getDamager().getType() == EntityType.SKELETON)
+		
+		if(evt.getEntityType() == EntityType.ARROW)
 		{
-			Entity victim = evt.getEntity();
-			if(victim instanceof LivingEntity)
+			Entity proj = evt.getEntity();
+			if(proj instanceof Arrow)
 			{
-				LivingEntity livingvictim = (LivingEntity)victim;
+				Arrow arrow = (Arrow)proj;
+				if( ! (arrow.getShooter() instanceof Skeleton))
+				{
+					return;
+				}
+				Skeleton skeleton = (Skeleton)arrow.getShooter();
 				int duration = 60;
 				int amplifier = 1;
-				for(PotionEffect pe :livingvictim.getActivePotionEffects())
+				LivingEntity target = skeleton.getTarget();
+				for(PotionEffect pe :target.getActivePotionEffects())
 				{
 					if(pe.getType() == PotionEffectType.SLOW)
 					{
@@ -33,7 +42,7 @@ public class SkeletonEvents implements Listener {
 					}
 				}
 				PotionEffect slow = new PotionEffect(PotionEffectType.SLOW, duration, amplifier);
-				livingvictim.addPotionEffect(slow);
+				target.addPotionEffect(slow);
 			}
 		}
 	}

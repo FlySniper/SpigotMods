@@ -21,7 +21,7 @@ public class ZombieEvents implements Listener {
 			if(victim instanceof LivingEntity)
 			{
 				LivingEntity livingvictim = (LivingEntity)victim;
-				PotionEffect weakness = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 100, 128);
+				PotionEffect weakness = new PotionEffect(PotionEffectType.WEAKNESS, 100, 1);
 				livingvictim.addPotionEffect(weakness);
 			}
 		}

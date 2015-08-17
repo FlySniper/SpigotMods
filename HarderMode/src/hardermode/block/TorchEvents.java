@@ -16,13 +16,19 @@ public class TorchEvents implements Listener, Runnable {
 	{
 		this.plugin = plugin;
 	}
+	
+	public TorchEvents(Plugin plugin,Block t)
+	{
+		this.plugin = plugin;
+		torch = t;
+	}
 	private Block torch = null;
 	@EventHandler
 	public void onPlace(BlockPlaceEvent evt)
 	{
 		if(evt.getBlock().getType() == Material.TORCH)
 		{
-			torch = evt.getBlock();
+			Block torch = evt.getBlock();
 			Server server = evt.getPlayer().getServer();
 			BukkitScheduler scheduler = server.getScheduler();
 			int ticks = 36000;
@@ -33,7 +39,7 @@ public class TorchEvents implements Listener, Runnable {
 				int level = 60 - height;
 				ticks -= ticklossperlevel * level;
 			}
-			scheduler.runTaskLater(plugin, this, ticks);
+			scheduler.runTaskLater(plugin, new TorchEvents(plugin,torch), ticks);
 		}
 	}
 
