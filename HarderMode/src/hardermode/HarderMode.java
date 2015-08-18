@@ -1,6 +1,5 @@
 package hardermode;
 
-import java.io.IOException;
 
 import hardermode.entity.*;
 import hardermode.block.*;
@@ -50,22 +49,12 @@ public class HarderMode extends JavaPlugin implements Listener {
 		pluginmanager.registerEvents(new CreeperEvents(),this);
 		pluginmanager.registerEvents(new ZombiePigmenEvents(),this);
 		pluginmanager.registerEvents(new TorchEvents(),this);
-		try {
-			TorchEvents.loadSchedulerInfo();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 	}
 	
 	public void onDisable()
 	{
-		try {
-			TorchEvents.saveSchedulerInfo();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	@EventHandler
