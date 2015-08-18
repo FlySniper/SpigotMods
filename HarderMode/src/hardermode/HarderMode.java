@@ -57,7 +57,7 @@ public class HarderMode extends JavaPlugin implements Listener {
 		
 	}
 	
-	@EventHandler
+	/*@EventHandler
     public void craftItem(PrepareItemCraftEvent evt)
 	{
 		Recipe r = evt.getRecipe();
@@ -67,5 +67,5 @@ public class HarderMode extends JavaPlugin implements Listener {
 			res.setAmount(16);
 			evt.getInventory().setResult(res);
 		}
-	}
+	}*/
 }
