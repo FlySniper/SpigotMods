@@ -4,13 +4,8 @@ package hardermode;
 import hardermode.entity.*;
 import hardermode.block.*;
 
-import org.bukkit.Material;
 import org.bukkit.Server;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,6 +44,7 @@ public class HarderMode extends JavaPlugin implements Listener {
 		pluginmanager.registerEvents(new CreeperEvents(),this);
 		pluginmanager.registerEvents(new ZombiePigmenEvents(),this);
 		pluginmanager.registerEvents(new TorchEvents(),this);
+		pluginmanager.registerEvents(new GhastEvents(),this);
 
 	}
 	
