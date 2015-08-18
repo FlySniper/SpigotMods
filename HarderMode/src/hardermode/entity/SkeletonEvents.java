@@ -15,12 +15,12 @@ import org.bukkit.potion.PotionEffectType;
 public class SkeletonEvents implements Listener {
 
 	@EventHandler
-	public void onDealDamage(ProjectileHitEvent evt)
+	public void onArrowDamage(EntityDamageByEntityEvent evt)
 	{
 		
-		if(evt.getEntityType() == EntityType.ARROW)
+		if(evt.getDamager().getType() == EntityType.ARROW)
 		{
-			Entity proj = evt.getEntity();
+			Entity proj = evt.getDamager();
 			if(proj instanceof Arrow)
 			{
 				Arrow arrow = (Arrow)proj;
@@ -28,11 +28,16 @@ public class SkeletonEvents implements Listener {
 				{
 					return;
 				}
-				Skeleton skeleton = (Skeleton)arrow.getShooter();
+				//Skeleton skeleton = (Skeleton)arrow.getShooter();
 				int duration = 60;
 				int amplifier = 1;
-				LivingEntity target = skeleton.getTarget();
-				for(PotionEffect pe :target.getActivePotionEffects())
+				Entity target = evt.getEntity();
+				if(!(target instanceof LivingEntity))
+				{
+					return;
+				}
+				LivingEntity livingtarget = (LivingEntity) target;
+				for(PotionEffect pe :livingtarget.getActivePotionEffects())
 				{
 					if(pe.getType() == PotionEffectType.SLOW)
 					{
@@ -42,7 +47,7 @@ public class SkeletonEvents implements Listener {
 					}
 				}
 				PotionEffect slow = new PotionEffect(PotionEffectType.SLOW, duration, amplifier);
-				target.addPotionEffect(slow);
+				livingtarget.addPotionEffect(slow);
 			}
 		}
 	}

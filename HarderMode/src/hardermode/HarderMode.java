@@ -1,25 +1,29 @@
 package hardermode;
 
-import java.util.List;
+import java.io.IOException;
 
 import hardermode.entity.*;
 import hardermode.block.*;
 
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HarderMode extends JavaPlugin implements Listener {
 
+	public static Server SERVER = null;
+	public static HarderMode ME = null;
 	public void onEnable()
 	{
-		Server server = this.getServer();
-		List<Recipe> recipeIterator = server.getRecipesFor(new ItemStack(Material.TORCH));
+		SERVER = this.getServer();
+		ME = this;
+/*		List<Recipe> recipeIterator = server.getRecipesFor(new ItemStack(Material.TORCH));
 		
 		server.clearRecipes();
 		for(Recipe r : recipeIterator)
@@ -37,19 +41,42 @@ public class HarderMode extends JavaPlugin implements Listener {
 				continue;
 			}
 			server.addRecipe(r);
-		}
-		PluginManager pluginmanager = server.getPluginManager();
+		}*/
+		PluginManager pluginmanager = SERVER.getPluginManager();
 		pluginmanager.registerEvents(this, this);
 		pluginmanager.registerEvents(new ZombieEvents(),this);
 		pluginmanager.registerEvents(new SkeletonEvents(),this);
 		pluginmanager.registerEvents(new SpiderEvents(),this);
 		pluginmanager.registerEvents(new CreeperEvents(),this);
 		pluginmanager.registerEvents(new ZombiePigmenEvents(),this);
-		pluginmanager.registerEvents(new TorchEvents(this),this);
+		pluginmanager.registerEvents(new TorchEvents(),this);
+		try {
+			TorchEvents.loadSchedulerInfo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void onDisable()
 	{
-		
+		try {
+			TorchEvents.saveSchedulerInfo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@EventHandler
+    public void craftItem(PrepareItemCraftEvent evt)
+	{
+		Recipe r = evt.getRecipe();
+		if(r.getResult().getType() == Material.TORCH)
+		{
+			ItemStack res = r.getResult();
+			res.setAmount(16);
+			evt.getInventory().setResult(res);
+		}
 	}
 }
