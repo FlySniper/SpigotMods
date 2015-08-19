@@ -29,7 +29,7 @@ public class SkeletonEvents implements Listener {
 					return;
 				}
 				//Skeleton skeleton = (Skeleton)arrow.getShooter();
-				int duration = 60;
+				int duration = 600;
 				int amplifier = 1;
 				Entity target = evt.getEntity();
 				if(!(target instanceof LivingEntity))
@@ -37,15 +37,6 @@ public class SkeletonEvents implements Listener {
 					return;
 				}
 				LivingEntity livingtarget = (LivingEntity) target;
-				for(PotionEffect pe :livingtarget.getActivePotionEffects())
-				{
-					if(pe.getType() == PotionEffectType.SLOW)
-					{
-						amplifier = pe.getAmplifier() + 1;
-						duration = pe.getDuration();
-						break;
-					}
-				}
 				PotionEffect slow = new PotionEffect(PotionEffectType.SLOW, duration, amplifier);
 				livingtarget.addPotionEffect(slow);
 			}
